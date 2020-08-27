@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "421978537689",
+    "firebase_url": "https://authenticator-5f19c.firebaseio.com",
+    "project_id": "authenticator-5f19c",
+    "storage_bucket": "authenticator-5f19c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:421978537689:android:adcb01e65d8579cba748c8",
+        "android_client_info": {
+          "package_name": "com.taher.authenticator"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "421978537689-2uoo3061mmlimd40k055dr1f0mvc59mn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAQq7dEq7JspAvN4xHmC0NpE0d_jGMEWxM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "421978537689-2uoo3061mmlimd40k055dr1f0mvc59mn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
