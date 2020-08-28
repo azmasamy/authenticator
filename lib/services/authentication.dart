@@ -1,22 +1,26 @@
 import 'package:authenticator/models/user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final GoogleSignIn _googleSignIn = GoogleSignIn();
 
+
+  // TODO: Ask if it should be in the user class
   User _userFromFirebaseUser(FirebaseUser firebaseUser) {
     return firebaseUser != null
         ? User(firebaseUser.email, firebaseUser.uid)
         : null;
   }
 
+  // return user stream when auth state changes
   Stream<User> get user {
     return _auth.onAuthStateChanged.map(_userFromFirebaseUser);
   }
 
-  // TODO: Register with email and password
+  // Register with email and password
   Future registerWithEmailAndPassword(String email, String password) async {
     try {
       AuthResult result = await _auth.createUserWithEmailAndPassword(
@@ -29,7 +33,7 @@ class AuthService {
     }
   }
 
-  // TODO: Sing in with email and password
+  // Sign in with email and password
   Future signInWithEmailAndPassword(String email, String password) async {
     try {
       AuthResult result = await _auth.signInWithEmailAndPassword(
@@ -42,18 +46,28 @@ class AuthService {
     }
   }
 
-  // TODO: Register with Google Account
+  // Sign in with Google Account
   Future signInWithGoogleAccount() async {
     try {
+
+      // Trigger the sign-in flow
       final GoogleSignInAccount googleUser = await _googleSignIn.signIn();
+
+      // Obtain the auth details from the request
       final GoogleSignInAuthentication googleAuth =
           await googleUser.authentication;
-      // get the credentials to (access / id token)
-      // to sign in via Firebase Authentication
+
+      // Create a credential from the access token
       final AuthCredential credential = GoogleAuthProvider.getCredential(
           accessToken: googleAuth.accessToken, idToken: googleAuth.idToken);
+
+      // to sign in via Firebase Authentication
       AuthResult result = await _auth.signInWithCredential(credential);
+
+      // convert firebaseuser to user
       FirebaseUser firebaseUser = result.user;
+
+      // return user stream
       return _userFromFirebaseUser(firebaseUser);
     } catch (e) {
       print(e.toString());
@@ -61,15 +75,35 @@ class AuthService {
     }
   }
 
-  // TODO: Sing in with Google Account
+  // Sign in with Facebook in Account
+  Future signInWithFacebookAccount() async {
+    try {
+      // Trigger the sign-in flow
+      final LoginResult facebookAuth = await FacebookAuth.instance.login();
 
-  // TODO: Sing in with Linked in Account
-  // TODO: Sing in with Linked in Account
+      // Create a credential from the access token
+      final AuthCredential facebookAuthCredential =
+          FacebookAuthProvider.getCredential(
+              accessToken: facebookAuth.accessToken.token);
 
-  // TODO: Sing in with Apple Account
-  // TODO: Sing in with Apple Account
+      // Once signed in, return the UserCredential
+      final AuthResult result =
+          await _auth.signInWithCredential(facebookAuthCredential);
 
-  // TODO: Sing out
+      // convert firebaseuser to user
+      FirebaseUser firebaseUser = result.user;
+
+      // return user stream
+      return _userFromFirebaseUser(firebaseUser);
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
+  }
+
+  // TODO: Sign in with Apple Account
+
+  // TODO: Sign out
   Future signOut() async {
     try {
       return await _auth.signOut();

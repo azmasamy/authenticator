@@ -22,6 +22,12 @@ class _SignUpState extends State<SignUp> {
   String _password;
   String _passwordConfirmed;
 
+  void setThirdPartyError(String error) {
+    setState(() {
+      _error = error;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,7 +42,7 @@ class _SignUpState extends State<SignUp> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                ThirdPartyAuthButtons(_error),
+                ThirdPartyAuthButtons(setThirdPartyError),
                 SizedBox(height: 20.0,),
                 TextFormField(
                   decoration: StyleConstants.textFieldDecoration.copyWith(hintText: "Email"),
